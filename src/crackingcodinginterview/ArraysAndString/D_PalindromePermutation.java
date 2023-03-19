@@ -36,19 +36,29 @@ public class D_PalindromePermutation {
             throw new RuntimeException("String cannot be null or empty");
         }
 
-        final String formattedWhetherPalindromePermutation = whetherPalindromePermutation
+        final String formattedWhetherPalindromePermutation = formatWhetherPalindromePermutation(whetherPalindromePermutation);
+        final Map<Character, Integer> palindromePermutations = makeMappingForPalindromePermutation(formattedWhetherPalindromePermutation);
+        final long odds = defineOdds(palindromePermutations);
+
+        return odds > 1;
+    }
+
+    private static Map<Character, Integer> makeMappingForPalindromePermutation(final String formattedWhetherPalindromePermutation) {
+        return formattedWhetherPalindromePermutation.chars()
+                .mapToObj(x -> (char) x)
+                .collect(Collectors.toMap(x -> x, y -> 1, (x, y) -> x + 1));
+    }
+
+    private static String formatWhetherPalindromePermutation(final String whetherPalindromePermutation) {
+        return whetherPalindromePermutation
                 .toLowerCase()
                 .strip()
                 .replace(" ", "");
+    }
 
-        final Map<Character, Integer> palindromePermutations = formattedWhetherPalindromePermutation.chars()
-                .mapToObj(x -> (char) x)
-                .collect(Collectors.toMap(x -> x, y -> 1, (x, y) -> x + 1));
-
-        long count = palindromePermutations.entrySet().stream()
+    private static long defineOdds(final Map<Character, Integer> palindromePermutations) {
+        return palindromePermutations.entrySet().stream()
                 .filter(x -> x.getValue() % 2 != 0)
                 .count();
-
-        return count == 1;
     }
 }
