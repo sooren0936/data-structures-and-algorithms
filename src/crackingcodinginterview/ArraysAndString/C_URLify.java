@@ -9,11 +9,8 @@ package crackingcodinginterview.ArraysAndString;
 public class C_URLify {
 
     public static void main(final String[] args) {
-        final String nonUniqueString = "    1abcd egf1";
-        urlify(nonUniqueString);
-
-        final String UniqueString = "1 a b c d e g f";
-        urlify(UniqueString);
+        final String requiredToUrlifyString = "    1a b cd    egf1     ";
+        urlify(requiredToUrlifyString);
     }
 
     private static void urlify(final String urlifyString) {
