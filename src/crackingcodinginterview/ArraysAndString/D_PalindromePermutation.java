@@ -46,7 +46,7 @@ public class D_PalindromePermutation {
                 .collect(Collectors.toMap(x -> x, y -> 1, (x, y) -> x + 1));
 
         long count = palindromePermutations.entrySet().stream()
-                .filter(x -> x.getValue() == 1)
+                .filter(x -> x.getValue() % 2 != 0)
                 .count();
 
         return count == 1;
