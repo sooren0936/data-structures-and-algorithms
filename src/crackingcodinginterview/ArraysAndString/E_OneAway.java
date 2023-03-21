@@ -40,8 +40,8 @@ public class E_OneAway {
             return false;
         }
 
-        final List<Character> originList = stringToList(origin);
-        final List<Character> whetherOneEditList = stringToList(whetherOneEdit);
+        final List<Character> originList = stringToCharList(origin);
+        final List<Character> whetherOneEditList = stringToCharList(whetherOneEdit);
 
         return checkIsOneEdit(originList, whetherOneEditList);
     }
@@ -65,7 +65,7 @@ public class E_OneAway {
         return true;
     }
 
-    private static List<Character> stringToList(final String origin) {
+    private static List<Character> stringToCharList(final String origin) {
         return origin.chars()
                 .mapToObj(x -> (char) x)
                 .collect(Collectors.toList());
