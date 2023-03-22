@@ -93,7 +93,7 @@ public class F_StringCompression {
         }
     }
 
-    public record CountOfLetter(char letter, int count) {
+    private record CountOfLetter(char letter, int count) {
 
         public static String countOfLettersToString(List<CountOfLetter> countOfLetters) {
             StringBuilder stringBuilder = new StringBuilder();
