@@ -13,26 +13,30 @@ import java.util.Set;
 public class A_RemoveDups {
 
     public static void main(String[] args) {
-        LinkedListSingleNode linkedListSingleNode = new LinkedListSingleNode(0);
+        long currentTimeMillis;
+
+        currentTimeMillis = System.currentTimeMillis();
+        System.out.println(solutionWithTemporaryBufferWithNextNext(removeDups()));
+        System.out.println(System.currentTimeMillis() - currentTimeMillis);
+
+        currentTimeMillis = System.currentTimeMillis();
+        System.out.println(solutionWithTemporaryBufferWithPrevious(removeDups()));
+        System.out.println(System.currentTimeMillis() - currentTimeMillis);
+
+        currentTimeMillis = System.currentTimeMillis();
+        System.out.println(solutionWithoutTemporaryBuffer(removeDups()));
+        System.out.println(System.currentTimeMillis() - currentTimeMillis);
+    }
+
+    private static LinkedListSingleNode removeDups() {
+        final LinkedListSingleNode linkedListSingleNode = new LinkedListSingleNode(0);
         linkedListSingleNode.appendToTail(1);
         linkedListSingleNode.appendToTail(1);
         linkedListSingleNode.appendToTail(2);
         linkedListSingleNode.appendToTail(3);
         linkedListSingleNode.appendToTail(1);
         linkedListSingleNode.appendToTail(2);
-        removeDups(linkedListSingleNode);
-    }
-
-    private static void removeDups(final LinkedListSingleNode linkedListSingleNode) {
-        long currentTimeMillis;
-
-        currentTimeMillis = System.currentTimeMillis();
-        System.out.println(solutionWithTemporaryBufferWithNextNext(linkedListSingleNode));
-        System.out.println(System.currentTimeMillis() - currentTimeMillis);
-
-        currentTimeMillis = System.currentTimeMillis();
-        System.out.println(solutionWithTemporaryBufferWithPrevious(linkedListSingleNode));
-        System.out.println(System.currentTimeMillis() - currentTimeMillis);
+        return linkedListSingleNode;
     }
 
     public static LinkedListSingleNode solutionWithTemporaryBufferWithNextNext(final LinkedListSingleNode linkedListSingleNode) {
@@ -77,6 +81,31 @@ public class A_RemoveDups {
             }
 
             linkedListForModify = linkedListForModify.next;
+        }
+        return linkedListSingleNode;
+    }
+
+    public static LinkedListSingleNode solutionWithoutTemporaryBuffer(final LinkedListSingleNode linkedListSingleNode) {
+        if (linkedListSingleNode == null || linkedListSingleNode.next == null) {
+            return linkedListSingleNode;
+        }
+        LinkedListSingleNode firstIterationLinkedList = linkedListSingleNode;
+        LinkedListSingleNode secondIterationLinkedList = linkedListSingleNode.next;
+
+        while (firstIterationLinkedList != null) {
+            while (secondIterationLinkedList != null) {
+                if (firstIterationLinkedList.data == secondIterationLinkedList.data) {
+                    firstIterationLinkedList.next = firstIterationLinkedList.next.next;
+                    secondIterationLinkedList = secondIterationLinkedList.next;
+                }
+                secondIterationLinkedList = secondIterationLinkedList.next;
+            }
+            if (firstIterationLinkedList.next == null) {
+                break;
+            }
+
+            firstIterationLinkedList = firstIterationLinkedList.next;
+            secondIterationLinkedList = firstIterationLinkedList.next;
         }
         return linkedListSingleNode;
     }
