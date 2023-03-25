@@ -24,7 +24,11 @@ public class A_RemoveDups {
         System.out.println(System.currentTimeMillis() - currentTimeMillis);
 
         currentTimeMillis = System.currentTimeMillis();
-        System.out.println(solutionWithoutTemporaryBuffer(removeDups()));
+        System.out.println(solutionWithoutTemporaryBufferWithPrevious(removeDups()));
+        System.out.println(System.currentTimeMillis() - currentTimeMillis);
+
+        currentTimeMillis = System.currentTimeMillis();
+        System.out.println(solutionWithoutTemporaryBufferWithNextNext(removeDups()));
         System.out.println(System.currentTimeMillis() - currentTimeMillis);
     }
 
@@ -44,20 +48,20 @@ public class A_RemoveDups {
             return linkedListSingleNode;
         }
 
-        LinkedListSingleNode linkedListForModify = linkedListSingleNode;
+        LinkedListSingleNode head = linkedListSingleNode;
 
         final Set<Integer> nodeCounts = new HashSet<>();
         nodeCounts.add(linkedListSingleNode.data);
-        while (linkedListForModify.next != null) {
-            int data = linkedListForModify.next.data;
+        while (head.next != null) {
+            int data = head.next.data;
             if (nodeCounts.contains(data)) {
-                linkedListForModify.next = linkedListForModify.next.next;
+                head.next = head.next.next;
                 continue;
             } else {
                 nodeCounts.add(data);
             }
 
-            linkedListForModify = linkedListForModify.next;
+            head = head.next;
         }
         return linkedListSingleNode;
     }
@@ -67,45 +71,68 @@ public class A_RemoveDups {
             return linkedListSingleNode;
         }
 
-        LinkedListSingleNode linkedListForModify = linkedListSingleNode;
+        LinkedListSingleNode head = linkedListSingleNode;
 
         final Set<Integer> nodeCounts = new HashSet<>();
         LinkedListSingleNode previous = linkedListSingleNode;
-        while (linkedListForModify != null) {
-            int data = linkedListForModify.data;
+        while (head != null) {
+            int data = head.data;
             if (nodeCounts.contains(data)) {
-                previous.next = linkedListForModify.next;
+                previous.next = head.next;
             } else {
                 nodeCounts.add(data);
-                previous = linkedListForModify;
+                previous = head;
             }
 
-            linkedListForModify = linkedListForModify.next;
+            head = head.next;
         }
         return linkedListSingleNode;
     }
 
-    public static LinkedListSingleNode solutionWithoutTemporaryBuffer(final LinkedListSingleNode linkedListSingleNode) {
+    public static LinkedListSingleNode solutionWithoutTemporaryBufferWithPrevious(final LinkedListSingleNode linkedListSingleNode) {
         if (linkedListSingleNode == null || linkedListSingleNode.next == null) {
             return linkedListSingleNode;
         }
-        LinkedListSingleNode firstIterationLinkedList = linkedListSingleNode;
-        LinkedListSingleNode secondIterationLinkedList = linkedListSingleNode.next;
+        LinkedListSingleNode head = linkedListSingleNode;
 
-        while (firstIterationLinkedList != null) {
-            while (secondIterationLinkedList != null) {
-                if (firstIterationLinkedList.data == secondIterationLinkedList.data) {
-                    firstIterationLinkedList.next = firstIterationLinkedList.next.next;
-                    secondIterationLinkedList = secondIterationLinkedList.next;
+        LinkedListSingleNode previous = linkedListSingleNode;
+        while (head != null) {
+
+            LinkedListSingleNode next = head.next;
+            while (next != null) {
+                if (head.data == next.data) {
+                    previous.next = next.next;
+                } else {
+                    previous = previous.next;
                 }
-                secondIterationLinkedList = secondIterationLinkedList.next;
+                next = next.next;
             }
-            if (firstIterationLinkedList.next == null) {
+            if (head.next == null) {
                 break;
             }
 
-            firstIterationLinkedList = firstIterationLinkedList.next;
-            secondIterationLinkedList = firstIterationLinkedList.next;
+            head = head.next;
+            previous = head;
+        }
+        return linkedListSingleNode;
+    }
+
+    public static LinkedListSingleNode solutionWithoutTemporaryBufferWithNextNext(final LinkedListSingleNode linkedListSingleNode) {
+        if (linkedListSingleNode == null || linkedListSingleNode.next == null) {
+            return linkedListSingleNode;
+        }
+        LinkedListSingleNode head = linkedListSingleNode;
+        while (head != null) {
+
+            LinkedListSingleNode next = head;
+            while (next != null && next.next != null) {
+                if (head.data == next.next.data) {
+                    next.next = next.next.next;
+                }
+                next = next.next;
+            }
+
+            head = head.next;
         }
         return linkedListSingleNode;
     }
