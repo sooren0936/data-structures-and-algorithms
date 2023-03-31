@@ -1,5 +1,7 @@
 package crackingcodinginterview.StacksAndQueues;
 
+import static crackingcodinginterview.StacksAndQueues.A_ThreeInOne.StackNumber.*;
+
 /**
  * Three in One: Describe how you could use a single array to implement three stacks.
  */
@@ -13,43 +15,43 @@ public class A_ThreeInOne {
 
         final ThreeInOneStack threeInOneStack = new ThreeInOneStackImpl();
 
-        System.out.println(threeInOneStack.empty(1));
-        threeInOneStack.push(5, 1);
-        System.out.println(threeInOneStack.empty(1));
-        System.out.println(threeInOneStack.peek(1));
-        threeInOneStack.pop(1);
-        System.out.println(threeInOneStack.empty(1));
-        System.out.println(threeInOneStack.peek(1));
+        System.out.println(threeInOneStack.empty(FIRST));
+        threeInOneStack.push(5, FIRST);
+        System.out.println(threeInOneStack.empty(FIRST));
+        System.out.println(threeInOneStack.peek(FIRST));
+        threeInOneStack.pop(FIRST);
+        System.out.println(threeInOneStack.empty(FIRST));
+        System.out.println(threeInOneStack.peek(FIRST));
 
-        System.out.println(threeInOneStack.empty(2));
-        threeInOneStack.push(5, 2);
-        threeInOneStack.push(5, 2);
-        threeInOneStack.push(5, 2);
-        System.out.println(threeInOneStack.empty(2));
-        System.out.println(threeInOneStack.peek(2));
-        threeInOneStack.pop(2);
-        System.out.println(threeInOneStack.empty(2));
-        System.out.println(threeInOneStack.peek(2));
+        System.out.println(threeInOneStack.empty(SECOND));
+        threeInOneStack.push(5, SECOND);
+        threeInOneStack.push(5, SECOND);
+        threeInOneStack.push(5, SECOND);
+        System.out.println(threeInOneStack.empty(SECOND));
+        System.out.println(threeInOneStack.peek(SECOND));
+        threeInOneStack.pop(SECOND);
+        System.out.println(threeInOneStack.empty(SECOND));
+        System.out.println(threeInOneStack.peek(SECOND));
 
-        System.out.println(threeInOneStack.empty(3));
-        threeInOneStack.push(5, 3);
-        threeInOneStack.push(5, 3);
-        System.out.println(threeInOneStack.empty(3));
-        System.out.println(threeInOneStack.peek(3));
-        threeInOneStack.pop(3);
-        System.out.println(threeInOneStack.empty(3));
-        System.out.println(threeInOneStack.peek(3));
+        System.out.println(threeInOneStack.empty(THIRD));
+        threeInOneStack.push(5, THIRD);
+        threeInOneStack.push(5, THIRD);
+        System.out.println(threeInOneStack.empty(THIRD));
+        System.out.println(threeInOneStack.peek(THIRD));
+        threeInOneStack.pop(THIRD);
+        System.out.println(threeInOneStack.empty(THIRD));
+        System.out.println(threeInOneStack.peek(THIRD));
     }
 
     interface ThreeInOneStack {
 
-        void pop(int stackNumber);
+        void pop(final StackNumber stackNumber);
 
-        void push(Integer value, int stackNumber);
+        void push(Integer value, final StackNumber stackNumber);
 
-        boolean empty(int stackNumber);
+        boolean empty(final StackNumber stackNumber);
 
-        Object peek(int stackNumber);
+        Object peek(final StackNumber stackNumber);
     }
 
     public static class Range {
@@ -80,6 +82,12 @@ public class A_ThreeInOne {
         }
     }
 
+    public enum StackNumber {
+        FIRST,
+        SECOND,
+        THIRD
+    }
+
     public static class ThreeInOneStackImpl implements ThreeInOneStack {
 
         private static final int DEFAULT_CAPACITY = 100;
@@ -103,7 +111,7 @@ public class A_ThreeInOne {
         }
 
         @Override
-        public void pop(final int stackNumber) {
+        public void pop(final StackNumber stackNumber) {
             final Range range = checkRange(stackNumber);
             if (range.getHead() == range.min) {
                 array[range.getHead()] = null;
@@ -114,7 +122,7 @@ public class A_ThreeInOne {
         }
 
         @Override
-        public void push(final Integer value, final int stackNumber) {
+        public void push(final Integer value, final StackNumber stackNumber) {
             final Range range = checkRange(stackNumber);
             if (array[range.min] == null) {
                 array[range.getHead()] = value;
@@ -125,7 +133,7 @@ public class A_ThreeInOne {
         }
 
         @Override
-        public boolean empty(final int stackNumber) {
+        public boolean empty(final StackNumber stackNumber) {
             final Range range = checkRange(stackNumber);
             if (array[range.min] == null) {
                 return true;
@@ -134,21 +142,17 @@ public class A_ThreeInOne {
         }
 
         @Override
-        public Object peek(final int stackNumber) {
+        public Object peek(final StackNumber stackNumber) {
             final Range range = checkRange(stackNumber);
             return array[range.head];
         }
 
-        public Range checkRange(final int stackNumber) {
-            if (stackNumber == 1) {
-                return firstStackRange;
-            } else if (stackNumber == 2) {
-                return secondStackRange;
-            } else if (stackNumber == 3) {
-                return thirdStackRange;
-            } else {
-                throw new IllegalArgumentException("" + stackNumber);
-            }
+        public Range checkRange(final StackNumber stackNumber) {
+            return switch (stackNumber) {
+                case FIRST -> firstStackRange;
+                case SECOND -> secondStackRange;
+                case THIRD -> thirdStackRange;
+            };
         }
     }
 }
