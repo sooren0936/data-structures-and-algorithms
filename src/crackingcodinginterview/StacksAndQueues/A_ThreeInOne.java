@@ -12,10 +12,11 @@ public class A_ThreeInOne {
     }
 
     public static void threeInOne() {
-
-        final ThreeInOneStack threeInOneStack = new ThreeInOneStackImpl();
+        final ThreeInOneStack threeInOneStack = new ThreeInOneStackImpl(3);
 
         System.out.println(threeInOneStack.empty(FIRST));
+        threeInOneStack.push(5, FIRST);
+        threeInOneStack.push(5, FIRST);
         threeInOneStack.push(5, FIRST);
         System.out.println(threeInOneStack.empty(FIRST));
         System.out.println(threeInOneStack.peek(FIRST));
@@ -36,6 +37,7 @@ public class A_ThreeInOne {
         System.out.println(threeInOneStack.empty(THIRD));
         threeInOneStack.push(5, THIRD);
         threeInOneStack.push(5, THIRD);
+        threeInOneStack.push(5, THIRD);
         System.out.println(threeInOneStack.empty(THIRD));
         System.out.println(threeInOneStack.peek(THIRD));
         threeInOneStack.pop(THIRD);
@@ -45,9 +47,9 @@ public class A_ThreeInOne {
 
     interface ThreeInOneStack {
 
-        void pop(final StackNumber stackNumber);
-
         void push(Integer value, final StackNumber stackNumber);
+
+        boolean pop(final StackNumber stackNumber);
 
         boolean empty(final StackNumber stackNumber);
 
@@ -65,7 +67,7 @@ public class A_ThreeInOne {
             this.head = head;
         }
 
-        public int getMid() {
+        public int getMin() {
             return min;
         }
 
@@ -98,7 +100,6 @@ public class A_ThreeInOne {
         private final Range secondStackRange;
         private final Range thirdStackRange;
 
-
         public ThreeInOneStackImpl() {
             this(DEFAULT_CAPACITY);
         }
@@ -111,20 +112,14 @@ public class A_ThreeInOne {
         }
 
         @Override
-        public void pop(final StackNumber stackNumber) {
-            final Range range = checkRange(stackNumber);
-            if (range.getHead() == range.min) {
-                array[range.getHead()] = null;
-            } else {
-                array[range.getHead()] = null;
-                range.setHead(range.getHead() - 1);
-            }
-        }
-
-        @Override
         public void push(final Integer value, final StackNumber stackNumber) {
-            final Range range = checkRange(stackNumber);
-            if (array[range.min] == null) {
+            final Range range = findRange(stackNumber);
+
+            if (range.getHead() + 1 > range.getMax()) {
+                throw new IndexOutOfBoundsException("Stack with number: " + stackNumber + " is overflow!");
+            }
+
+            if (array[range.getMin()] == null) {
                 array[range.getHead()] = value;
             } else {
                 range.setHead(range.getHead() + 1);
@@ -133,9 +128,26 @@ public class A_ThreeInOne {
         }
 
         @Override
+        public boolean pop(final StackNumber stackNumber) {
+            final Range range = findRange(stackNumber);
+
+            if (range.getHead() == range.getMin() && array[range.getHead()] == null) {
+                return false;
+            }
+
+            if (range.getHead() == range.getMin()) {
+                array[range.getHead()] = null;
+            } else {
+                array[range.getHead()] = null;
+                range.setHead(range.getHead() - 1);
+            }
+            return true;
+        }
+
+        @Override
         public boolean empty(final StackNumber stackNumber) {
-            final Range range = checkRange(stackNumber);
-            if (array[range.min] == null) {
+            final Range range = findRange(stackNumber);
+            if (array[range.getMin()] == null) {
                 return true;
             }
             return false;
@@ -143,11 +155,11 @@ public class A_ThreeInOne {
 
         @Override
         public Object peek(final StackNumber stackNumber) {
-            final Range range = checkRange(stackNumber);
-            return array[range.head];
+            final Range range = findRange(stackNumber);
+            return array[range.getHead()];
         }
 
-        public Range checkRange(final StackNumber stackNumber) {
+        public Range findRange(final StackNumber stackNumber) {
             return switch (stackNumber) {
                 case FIRST -> firstStackRange;
                 case SECOND -> secondStackRange;
@@ -155,4 +167,6 @@ public class A_ThreeInOne {
             };
         }
     }
+
+
 }
