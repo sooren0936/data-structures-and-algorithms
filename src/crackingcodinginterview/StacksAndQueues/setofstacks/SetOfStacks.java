@@ -1,4 +1,4 @@
-package crackingcodinginterview.StacksAndQueues.setofstacks.stack;
+package crackingcodinginterview.StacksAndQueues.setofstacks;
 
 public interface SetOfStacks<T> {
 

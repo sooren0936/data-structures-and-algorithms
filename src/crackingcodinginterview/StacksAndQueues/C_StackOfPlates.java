@@ -1,7 +1,7 @@
 package crackingcodinginterview.StacksAndQueues;
 
-import crackingcodinginterview.StacksAndQueues.setofstacks.stack.SetOfStacks;
-import crackingcodinginterview.StacksAndQueues.setofstacks.stack.impl.SetOfStacksImpl;
+import crackingcodinginterview.StacksAndQueues.setofstacks.SetOfStacks;
+import crackingcodinginterview.StacksAndQueues.setofstacks.impl.SetOfStacksImpl;
 
 /**
  * Stack of Plates: Imagine a (literal) stack of plates. If the stack gets too high, it might topple.

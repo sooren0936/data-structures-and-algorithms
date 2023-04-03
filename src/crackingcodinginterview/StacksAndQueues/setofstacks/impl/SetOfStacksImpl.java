@@ -1,6 +1,6 @@
-package crackingcodinginterview.StacksAndQueues.setofstacks.stack.impl;
+package crackingcodinginterview.StacksAndQueues.setofstacks.impl;
 
-import crackingcodinginterview.StacksAndQueues.setofstacks.stack.SetOfStacks;
+import crackingcodinginterview.StacksAndQueues.setofstacks.SetOfStacks;
 
 import java.util.ArrayList;
 import java.util.List;
