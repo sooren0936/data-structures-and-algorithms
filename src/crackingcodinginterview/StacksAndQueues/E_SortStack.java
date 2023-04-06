@@ -14,22 +14,39 @@ public class E_SortStack {
     }
 
     public static void sortStack() {
-        final Stack<Integer> stack = new Stack<>();
 
-        stack.push(1);
-        stack.push(500);
-        stack.push(3);
-        stack.push(105);
-        stack.push(3);
-        stack.push(3);
-        stack.push(-423);
-        stack.push(553);
-        stack.push(5);
-        stack.push(4);
-        stack.push(100);
-        stack.push(4);
-        stack.push(32);
-        System.out.println(solutionNaive(stack));
+        final Stack<Integer> firstStack = new Stack<>();
+        firstStack.push(1);
+        firstStack.push(500);
+        firstStack.push(3);
+        firstStack.push(105);
+        firstStack.push(3);
+        firstStack.push(3);
+        firstStack.push(-423);
+        firstStack.push(553);
+        firstStack.push(5);
+        firstStack.push(4);
+        firstStack.push(100);
+        firstStack.push(4);
+        firstStack.push(32);
+        System.out.println(solutionNaive(firstStack));
+
+        final Stack<Integer> secondStack = new Stack<>();
+        secondStack.push(-1000);
+        secondStack.push(1);
+        secondStack.push(500);
+        secondStack.push(3);
+        secondStack.push(105);
+        secondStack.push(3);
+        secondStack.push(3);
+        secondStack.push(-423);
+        secondStack.push(553);
+        secondStack.push(5);
+        secondStack.push(4);
+        secondStack.push(100);
+        secondStack.push(4);
+        secondStack.push(32);
+        System.out.println(solutionShortVersion(secondStack));
     }
 
     public static Stack<Integer> solutionNaive(final Stack<Integer> stack) {
@@ -69,17 +86,16 @@ public class E_SortStack {
             if (stackPop1 < stackPop2) {
                 count--;
                 additionalStack.push(stackPop2);
-                stackPop2 = stackPop1;
-                stackPop1 = null;
+                stackPop2 = null;
                 if (stack.isEmpty()) {
                     additionalStack.push(stackPop1);
                 }
             } else if (stackPop1 > stackPop2) {
-                count++;
                 additionalStack.push(stackPop1);
-                stackPop1 = null;
+                stackPop1 = stackPop2;
+                stackPop2 = null;
                 if (stack.isEmpty()) {
-                    additionalStack.push(stackPop2);
+                    additionalStack.push(stackPop1);
                 }
             } else {
                 additionalStack.push(stackPop2);
@@ -120,5 +136,29 @@ public class E_SortStack {
             }
         }
         return count;
+    }
+
+    public static Stack<Integer> solutionShortVersion(final Stack<Integer> stack) {
+        if (stack.isEmpty()) {
+            return stack;
+        }
+
+        final Stack<Integer> additionalStack = new Stack<>();
+
+        while (!stack.empty()) {
+            Integer stackPop = stack.pop();
+
+            while (!additionalStack.empty() && additionalStack.peek() > stackPop) {
+                stack.push(additionalStack.pop());
+            }
+
+            additionalStack.push(stackPop);
+        }
+
+        while (!additionalStack.isEmpty()) {
+            stack.push(additionalStack.pop());
+        }
+
+        return stack;
     }
 }
