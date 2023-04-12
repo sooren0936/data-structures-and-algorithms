@@ -13,18 +13,45 @@ public class B_MinimalTree {
     }
 
     public static void minimalTree() {
-        int[] sortedArray = {1, 3, 5, 6, 9, 15, 30};
-        solution(sortedArray, sortedArray.length / 2, sortedArray.length / 2, 0);
+        int[] oddedArray = {1, 3, 5, 6, 9, 15, 30};
+        solutionNaive(oddedArray);
+        solutionLittleBitOptimal(oddedArray);
+
+        int[] evenArray = {1, 3, 5, 6, 9, 15, 30, 40};
+        solutionNaive(evenArray);
+        solutionLittleBitOptimal(evenArray);
     }
 
-    public static Node solution(int[] sortedArray, int position, int step, int count) {
+    public static Node solutionNaive(final int[] sortedArray) {
+        return buildBinarySearchTree(sortedArray, sortedArray.length / 2, sortedArray.length / 2, 0);
+    }
+
+    private static Node buildBinarySearchTree(final int[] sortedArray, final int position,
+                                              int step, final int count) {
         if (count > (int) Math.sqrt(sortedArray.length)) {
             return null;
         }
         step = (step + 1) / 2;
-        Node childLeft = solution(sortedArray, position - step, step, count + 1);
-        Node childRight = solution(sortedArray, position + step, step, count + 1);
-        Node root = new Node(sortedArray[position], childLeft, childRight);
+        final Node childLeft = buildBinarySearchTree(sortedArray, position - step, step, count + 1);
+        final Node childRight = buildBinarySearchTree(sortedArray, position + step, step, count + 1);
+        final Node root = new Node(sortedArray[position], childLeft, childRight);
+
+        return root;
+    }
+
+
+    public static Node solutionLittleBitOptimal(final int[] sortedArray) {
+        return createMinimalBST(sortedArray, 0, sortedArray.length - 2);
+    }
+
+    private static Node createMinimalBST(final int[] sortedArray, final int start, final int end) {
+        if (end < start) {
+            return null;
+        }
+        int position = (start + end) / 2;
+        final Node childLeft = createMinimalBST(sortedArray, start, position - 1);
+        final Node childRight = createMinimalBST(sortedArray, position + 1, end);
+        final Node root = new Node(sortedArray[position], childLeft, childRight);
 
         return root;
     }
