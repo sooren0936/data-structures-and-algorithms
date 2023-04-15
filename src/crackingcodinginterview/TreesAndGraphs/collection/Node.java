@@ -15,8 +15,12 @@ public class Node {
     }
 
     public Node(final Integer value, final Node... children) {
+        final Node[] notNullChildren = Arrays.stream(children)
+                .filter(Objects::nonNull)
+                .toArray(Node[]::new);
+
         this.value = value;
-        this.children = children;
+        this.children = notNullChildren;
     }
 
     private Integer value;

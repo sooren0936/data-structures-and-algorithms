@@ -2,8 +2,10 @@ package crackingcodinginterview.TreesAndGraphs;
 
 import crackingcodinginterview.TreesAndGraphs.collection.Node;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import static crackingcodinginterview.TreesAndGraphs.B_MinimalTree.solutionNaive;
 
@@ -22,6 +24,7 @@ public class D_CheckBalanced {
         final int[] oddedArray = {1, 3, 5, 6, 9, 15, 30};
         final Node bst = solutionNaive(oddedArray);
         System.out.println(solutionDFS(bst));
+        System.out.println(solutionBFS(bst));
 
         Node leftC = new Node(5, new Node[0]);
         Node leftB = new Node(4, leftC);
@@ -31,6 +34,7 @@ public class D_CheckBalanced {
         Node root = new Node(1, leftA, rightA);
 
         System.out.println(solutionDFS(root));
+        System.out.println(solutionBFS(root));
     }
 
     public static boolean solutionDFS(final Node binaryTree) {
@@ -58,5 +62,42 @@ public class D_CheckBalanced {
         }
         final Integer secondBranch = levels.get(1);
         return Math.abs(secondBranch - firstBranch);
+    }
+
+    public static boolean solutionBFS(final Node binaryTree) {
+        int solution = solutionMakeBFS(binaryTree);
+        if (solution > 1) {
+            return false;
+        }
+        return true;
+    }
+
+    private static int solutionMakeBFS(final Node binaryTree) {
+        int levelMax = 1;
+        int levelMin = Integer.MAX_VALUE;
+
+        final Queue<List<Node>> queueNodes = new ArrayDeque<>();
+        queueNodes.add(List.of(binaryTree));
+
+        while (!queueNodes.isEmpty()) {
+            final List<Node> nodes = queueNodes.remove();
+            final List<Node> children = new ArrayList<>();
+
+            for (Node node : nodes) {
+                if (node.getChildren().length != 2) {
+                    levelMin = Math.min(levelMin, levelMax);
+                }
+
+                for (Node child : node.getChildren()) {
+                    children.add(child);
+                }
+            }
+            if (!children.isEmpty()) {
+                queueNodes.add(children);
+            }
+            levelMax++;
+        }
+
+        return levelMax - levelMin;
     }
 }

@@ -2,7 +2,9 @@ package crackingcodinginterview.TreesAndGraphs;
 
 import crackingcodinginterview.TreesAndGraphs.collection.Node;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static crackingcodinginterview.TreesAndGraphs.B_MinimalTree.solutionNaive;
 
@@ -43,18 +45,7 @@ public class С_ListOfDepths {
                 fillListOfDepths(child, nodes, listOfDepths);
             }
         }
-        fillNonNullNodes(bst, listOfDepths, nodes);
-    }
-
-    private static void fillNonNullNodes(final Node bst, final List<LinkedList<Node>> listOfDepths,
-                                         final LinkedList<Node> nodes) {
-        final long childrenCount = Arrays.stream(bst.getChildren())
-                .filter(Objects::nonNull)
-                .count();
-
-        if (childrenCount != 0) {
-            listOfDepths.add(nodes);
-        }
+        listOfDepths.add(nodes);
     }
 
     public static List<LinkedList<Node>> solutionBFS(final Node bst) {
