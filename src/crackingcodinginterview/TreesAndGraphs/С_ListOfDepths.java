@@ -19,13 +19,12 @@ public class С_ListOfDepths {
     public static void listOfDepths() {
         final int[] oddedArray = {1, 3, 5, 6, 9, 15, 30};
         final Node bst = solutionNaive(oddedArray);
-        System.out.println(solution(bst));
 
-        int[] evenArray = {1, 3, 5, 6, 9, 15, 30, 40};
-        solutionNaive(evenArray);
+        System.out.println(solutionDFS(bst));
+        System.out.println(solutionBFS(bst));
     }
 
-    public static List<LinkedList<Node>> solution(final Node bst) {
+    public static List<LinkedList<Node>> solutionDFS(final Node bst) {
         final LinkedList<Node> linkedListNodes = new LinkedList<>();
         final List<LinkedList<Node>> listOfDepths = new ArrayList<>();
         listOfDepths.add(linkedListNodes);
@@ -44,12 +43,46 @@ public class С_ListOfDepths {
                 fillListOfDepths(child, nodes, listOfDepths);
             }
         }
+        fillNonNullNodes(bst, listOfDepths, nodes);
+    }
+
+    private static void fillNonNullNodes(final Node bst, final List<LinkedList<Node>> listOfDepths,
+                                         final LinkedList<Node> nodes) {
         final long childrenCount = Arrays.stream(bst.getChildren())
                 .filter(Objects::nonNull)
                 .count();
 
         if (childrenCount != 0) {
             listOfDepths.add(nodes);
+        }
+    }
+
+    public static List<LinkedList<Node>> solutionBFS(final Node bst) {
+        final List<LinkedList<Node>> listOfBreadth = new ArrayList<>();
+
+        fillListOfBreadth(bst, listOfBreadth);
+        return listOfBreadth;
+    }
+
+    private static void fillListOfBreadth(final Node bst, final List<LinkedList<Node>> listOfDepths) {
+        LinkedList<Node> nodes = new LinkedList<>();
+        nodes.add(bst);
+
+
+        while (!nodes.isEmpty()) {
+            listOfDepths.add(nodes);
+            LinkedList<Node> currentNodes = nodes;
+            nodes = new LinkedList<>();
+
+            for (Node node : currentNodes) {
+                if (node != null) {
+                    for (Node child : node.getChildren()) {
+                        if (child != null) {
+                            nodes.add(child);
+                        }
+                    }
+                }
+            }
         }
     }
 }
