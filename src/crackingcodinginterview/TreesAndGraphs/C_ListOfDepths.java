@@ -12,7 +12,7 @@ import static crackingcodinginterview.TreesAndGraphs.B_MinimalTree.solutionNaive
  * List of Depths: Given a binary tree, design an algorithm which creates a linked list of all the nodes
  * at each depth (e.g., if you have a tree with depth D, you'll have D linked lists).
  */
-public class С_ListOfDepths {
+public class C_ListOfDepths {
 
     public static void main(String[] args) {
         listOfDepths();
