@@ -1,0 +1,80 @@
+package crackingcodinginterview.TreesAndGraphs;
+
+import crackingcodinginterview.TreesAndGraphs.collection.TreeNode;
+
+/**
+ * Successor: Write an algorithm to find the "next" node (i.e., in-order successor) of a given node in a
+ * binary search tree. You may assume that each node has a link to its parent
+ */
+public class F_Successor {
+
+    public static void main(String[] args) {
+        validateBST();
+    }
+
+    public static void validateBST() {
+        TreeNode leftC1 = new TreeNode(12);
+        TreeNode rightC1 = new TreeNode(33);
+
+        TreeNode leftB1 = new TreeNode(25, leftC1, rightC1);
+        TreeNode rightB1 = new TreeNode(75);
+
+        TreeNode leftB11 = new TreeNode(150);
+        TreeNode rightB11 = new TreeNode(250);
+
+        TreeNode leftA1 = new TreeNode(50, leftB1, rightB1);
+        TreeNode rightA1 = new TreeNode(200, leftB11, rightB11);
+
+        TreeNode root1 = new TreeNode(100, leftA1, rightA1);
+
+        leftA1.setParent(root1);
+        rightA1.setParent(root1);
+
+        leftB11.setParent(leftA1);
+        rightB11.setParent(rightA1);
+
+        leftB1.setParent(leftB11);
+        rightB1.setParent(rightB11);
+
+        leftC1.setParent(leftB1);
+        rightC1.setParent(rightB1);
+
+        System.out.println(inorderSuccessor(root1));
+
+        TreeNode leftC2 = new TreeNode(5);
+        TreeNode leftB2 = new TreeNode(4, null, leftC2);
+        TreeNode rightA2 = new TreeNode(3, null, leftB2);
+        TreeNode leftA2 = new TreeNode(2);
+
+        TreeNode root2 = new TreeNode(1, leftA2, rightA2);
+
+        System.out.println(inorderSuccessor(root2));
+    }
+
+    public static TreeNode inorderSuccessor(final TreeNode n) {
+        if (n == null) return null;
+
+        if (n.getRight() != null) {
+            return leftMostChild(n.getRight());
+        } else {
+            TreeNode q = n;
+            TreeNode x = q.getParent();
+
+            while (x != null && x.getLeft() != q) {
+                q = x;
+                x = x.getParent();
+            }
+            return x;
+        }
+    }
+
+    private static TreeNode leftMostChild(TreeNode n) {
+        if (n == null) {
+            return null;
+        }
+        while (n.getLeft() != null) {
+            n = n.getLeft();
+        }
+        return n;
+    }
+}
