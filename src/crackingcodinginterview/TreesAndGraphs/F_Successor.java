@@ -51,30 +51,32 @@ public class F_Successor {
         System.out.println(inorderSuccessor(root2));
     }
 
-    public static TreeNode inorderSuccessor(final TreeNode n) {
-        if (n == null) return null;
+    public static TreeNode inorderSuccessor(final TreeNode treeNode) {
+        if (treeNode == null) {
+            return null;
+        }
 
-        if (n.getRight() != null) {
-            return leftMostChild(n.getRight());
+        if (treeNode.getRight() != null) {
+            return leftMostChild(treeNode.getRight());
         } else {
-            TreeNode q = n;
-            TreeNode x = q.getParent();
+            TreeNode child = treeNode;
+            TreeNode parent = child.getParent();
 
-            while (x != null && x.getLeft() != q) {
-                q = x;
-                x = x.getParent();
+            while (parent != null && parent.getLeft() != child) {
+                child = parent;
+                parent = parent.getParent();
             }
-            return x;
+            return parent;
         }
     }
 
-    private static TreeNode leftMostChild(TreeNode n) {
-        if (n == null) {
+    private static TreeNode leftMostChild(TreeNode treeNode) {
+        if (treeNode == null) {
             return null;
         }
-        while (n.getLeft() != null) {
-            n = n.getLeft();
+        while (treeNode.getLeft() != null) {
+            treeNode = treeNode.getLeft();
         }
-        return n;
+        return treeNode;
     }
 }
