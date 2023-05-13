@@ -9,10 +9,10 @@ import crackingcodinginterview.TreesAndGraphs.collection.TreeNode;
 public class F_Successor {
 
     public static void main(String[] args) {
-        validateBST();
+        successor();
     }
 
-    public static void validateBST() {
+    public static void successor() {
         TreeNode leftC1 = new TreeNode(12);
         TreeNode rightC1 = new TreeNode(33);
 
@@ -51,7 +51,7 @@ public class F_Successor {
         System.out.println(inorderSuccessor(root2));
     }
 
-    public static TreeNode inorderSuccessor(final TreeNode treeNode) {
+    private static TreeNode inorderSuccessor(final TreeNode treeNode) {
         if (treeNode == null) {
             return null;
         }

@@ -12,7 +12,7 @@ public class GenericNode<T> {
 
     private T value;
     private List<GenericNode<T>> children = new ArrayList<>();
-    private List<GenericNode<T>> parents;
+    private List<GenericNode<T>> parents = new ArrayList<>();
 
     public GenericNode(final T value) {
         this.value = value;
@@ -59,6 +59,10 @@ public class GenericNode<T> {
 
     public void setParents(List<GenericNode<T>> parents) {
         this.parents = parents;
+    }
+
+    public void addParent(final GenericNode<T> parent) {
+        parents.add(parent);
     }
 
     @Override
